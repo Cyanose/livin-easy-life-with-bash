@@ -1,0 +1,30 @@
+#! /bin/bash
+
+
+SET=0
+
+while [ true ]
+do
+	MONITOR=$(xrandr --query | grep DP2-3 | grep " connected")
+
+	if [ -n "$MONITOR" ] && [ "$SET" -eq "0" ]
+	then
+		xrandr --newmode "1680x1050_60.00"  146.25  1680 1784 1960 2240  1050 1053 1059 1089 -hsync +vsync
+		xrandr --addmode DP2-3 1680x1050_60.00
+		xrandr --output DP2-3 --mode 1680x1050_60.00
+		#gsettings set org.gnome.desktop.interface text-scaling-factor "1.5"
+		powerprofilesctl set performance
+		echo "monitor plugged..."
+		SET=1
+	fi
+
+	if [ -z "$MONITOR" ] && [ "$SET" -eq "1" ]
+	then
+		#gsettings set org.gnome.desktop.interface text-scaling-factor "1.6"
+		echo "monitor unplugged..."
+		powerprofilesctl set power-saver
+		SET=0
+	fi
+
+	sleep 5
+done
