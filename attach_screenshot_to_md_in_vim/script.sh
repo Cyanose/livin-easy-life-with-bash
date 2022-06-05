@@ -3,7 +3,7 @@ ss_folder="$HOME/Obrazy/Screenshoty/"
 
 last_ss=$(exa -rsnew $ss_folder | head -1 )
 
-mkdir .resources
+mkdir .resources 2>/dev/null
 cp ${ss_folder}$last_ss .resources/
 
 prefix_of_grabbed_last=$(echo $last_ss | sed 's/.png$//')
